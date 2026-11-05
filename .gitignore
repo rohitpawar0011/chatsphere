@@ -1,0 +1,70 @@
+# =====================================================
+# ChatSphere - Root Git Ignore
+# =====================================================
+
+# =====================================================
+# Angular generated files
+# =====================================================
+
+frontend/chatsphere-frontend/.angular/
+frontend/chatsphere-frontend/node_modules/
+frontend/chatsphere-frontend/dist/
+frontend/chatsphere-frontend/out-tsc/
+frontend/chatsphere-frontend/bazel-out/
+
+# Angular cache / generated files
+frontend/chatsphere-frontend/.sass-cache/
+frontend/chatsphere-frontend/coverage/
+frontend/chatsphere-frontend/.history/
+frontend/chatsphere-frontend/testem.log/
+frontend/chatsphere-frontend/typings/
+
+# =====================================================
+# IDE
+# =====================================================
+
+frontend/chatsphere-frontend/.vscode/
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+.c9/
+*.launch
+*.sublime-workspace
+
+# =====================================================
+# Logs
+# =====================================================
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =====================================================
+# Environment files
+# =====================================================
+
+**/.env
+**/.env.*
+!**/.env.example
+
+# =====================================================
+# OS files
+# =====================================================
+
+.DS_Store
+Thumbs.db
+
+# =====================================================
+# ChatSphere custom Angular architecture
+# Ignore these for the initial boilerplate commit
+# =====================================================
+
+frontend/chatsphere-frontend/src/app/core/
+frontend/chatsphere-frontend/src/app/features/
+frontend/chatsphere-frontend/src/app/layout/
+frontend/chatsphere-frontend/src/app/shared/
+
+# Custom theme for now
+frontend/chatsphere-frontend/src/material-theme.scss
