@@ -126,4 +126,18 @@ export class ChatService {
     )
   );
 }
+// conversation search functionality
+readonly searchTerm = signal('');
+
+readonly filteredConversations = computed(() => {
+  const search = this.searchTerm().trim().toLowerCase();
+
+  if (!search) {
+    return this.conversations();
+  }
+
+  return this.conversations().filter(conversation =>
+    conversation.name.toLowerCase().includes(search)
+  );
+});
 }

@@ -1,20 +1,26 @@
-
-<aside class="w-[340px] h-full border-r border-slate-200
-             flex flex-col bg-white shrink-0">
+<aside
+  class="w-[340px] h-full border-r border-slate-200
+         flex flex-col bg-white shrink-0"
+>
 
   <!-- Header -->
   <div class="p-5">
+
     <h1 class="text-2xl font-bold text-slate-900">
       Messages
     </h1>
 
+    <!-- Search -->
     <input
       type="text"
       placeholder="Search conversations..."
-      class="mt-5 w-full rounded-xl bg-slate-100
-             px-4 py-3 outline-none
+      (input)="updateSearchTerm($any($event.target).value)"
+      class="w-full mt-4 px-4 py-2 rounded-lg bg-slate-100
+             border border-slate-200
+             outline-none
              focus:ring-2 focus:ring-violet-500"
     />
+
   </div>
 
   <!-- Recent Chats -->
@@ -28,26 +34,27 @@
   <div class="flex-1 overflow-y-auto">
 
     @for (
-      conversation of chatService.conversations();
+      conversation of chatService.filteredConversations();
       track conversation.id
     ) {
 
       <button
+        type="button"
         (click)="selectConversation(conversation.id)"
         class="w-full flex items-center gap-3
-               px-5 py-4 text-left transition-colors"
+               px-5 py-4 text-left transition-colors
+               hover:bg-slate-50"
         [class.bg-violet-50]="
           chatService.selectedConversationId() === conversation.id
-        "
-        [class.hover:bg-slate-50]="
-          chatService.selectedConversationId() !== conversation.id
         "
       >
 
         <!-- Avatar -->
-        <div class="w-12 h-12 rounded-full bg-violet-200
-                    flex items-center justify-center
-                    font-bold text-violet-700 shrink-0">
+        <div
+          class="w-12 h-12 rounded-full bg-violet-200
+                 flex items-center justify-center
+                 font-bold text-violet-700 shrink-0"
+        >
           {{ conversation.initials }}
         </div>
 
@@ -65,18 +72,22 @@
         </div>
 
         <!-- Time and Unread Count -->
-        <div class="flex flex-col items-end gap-1">
+        <div class="flex flex-col items-end gap-1 shrink-0">
 
           <span class="text-xs text-slate-400">
-            {{ conversation.updatedAt | date:'shortTime' }}
+            {{ conversation.updatedAt | relativeTime }}
           </span>
 
           @if (conversation.unreadCount > 0) {
-            <span class="min-w-5 h-5 px-1 rounded-full
-                         bg-violet-600 text-white
-                         text-xs flex items-center justify-center">
+
+            <span
+              class="min-w-5 h-5 px-1 rounded-full
+                     bg-violet-600 text-white
+                     text-xs flex items-center justify-center"
+            >
               {{ conversation.unreadCount }}
             </span>
+
           }
 
         </div>
@@ -84,9 +95,11 @@
       </button>
 
     } @empty {
+
       <p class="p-5 text-sm text-slate-500">
         No conversations found.
       </p>
+
     }
 
   </div>
