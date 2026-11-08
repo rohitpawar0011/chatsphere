@@ -1,12 +1,12 @@
 
 import { Component, inject } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { RelativeTimePipe } from '../../../../shared/pipes/relative-time-pipe';
 import { ChatService } from '../../services/chat';
 
 @Component({
   selector: 'app-message-list',
   standalone: true,
-  imports: [DatePipe],
+  imports: [RelativeTimePipe],
   templateUrl: './message-list.html',
   styleUrl: './message-list.css'
 })
