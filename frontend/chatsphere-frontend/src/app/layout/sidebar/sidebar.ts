@@ -5,6 +5,7 @@ import {
   LucideUserRound,
   LucideSettings
 } from '@lucide/angular';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,7 +14,8 @@ import {
     LucideMessageCircle,
     LucideUsers,
     LucideUserRound,
-    LucideSettings
+    LucideSettings,
+    MatTooltipModule
   ],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css'
