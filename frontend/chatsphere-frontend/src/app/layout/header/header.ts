@@ -1,15 +1,20 @@
 import { Component } from '@angular/core';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
+    MatButtonModule,
     MatMenuModule,
-    MatButtonModule
+    MatDialogModule
   ],
-  templateUrl: './header.html'
+  templateUrl: './header.html',
+  styleUrl: './header.css'
 })
-export class HeaderComponent {
+export class Header {logout(): void {
+  console.log('Logout clicked');
+}
 }
