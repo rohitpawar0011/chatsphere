@@ -83,7 +83,7 @@ export class ChatService {
   readonly conversations = this._conversations.asReadonly();
 
   // 3. Store selected conversation ID
-  readonly selectedConversationId = signal<string>('1');
+  readonly selectedConversationId = signal<string | null>('1');
 
   // 4. Get selected conversation automatically
   readonly selectedConversation = computed(() =>
@@ -92,11 +92,15 @@ export class ChatService {
         conversation.id === this.selectedConversationId()
     ) ?? null
   );
+// 5. Select a conversation
+selectConversation(id: string): void {
+  this.selectedConversationId.set(id);
+}
 
-  // 5. Select a conversation
-  selectConversation(id: string): void {
-    this.selectedConversationId.set(id);
-  }
+// 6. Clear selected conversation
+clearSelectedConversation(): void {
+  this.selectedConversationId.set(null);
+}
 
   sendMessage(content: string): void {
 

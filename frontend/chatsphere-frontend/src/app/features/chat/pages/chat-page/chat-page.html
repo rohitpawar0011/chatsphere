@@ -1,8 +1,21 @@
-
 <div class="flex h-full w-full overflow-hidden bg-white">
 
-  <app-conversation-list />
+  <!-- Conversation List -->
+  <div
+    class="w-full lg:w-auto"
+    [class.hidden]="chatService.selectedConversation()"
+    [class.lg:block]="true"
+  >
+    <app-conversation-list />
+  </div>
 
-  <app-chat-window />
+  <!-- Chat Window -->
+  <div
+    class="flex-1 min-w-0"
+    [class.hidden]="!chatService.selectedConversation()"
+    [class.lg:block]="true"
+  >
+    <app-chat-window />
+  </div>
 
 </div>
