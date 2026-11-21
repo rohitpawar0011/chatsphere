@@ -15,5 +15,9 @@ import { MessageInput } from '../message-input/message-input';
 export class ChatWindow {
 
   protected readonly chatService = inject(ChatService);
+  
+  goBack(): void {
+  this.chatService.clearSelectedConversation();
+}
 
 }
