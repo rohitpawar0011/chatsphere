@@ -1,6 +1,32 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class Auth {}
+export class AuthService {
+
+  private readonly _isAuthenticated = signal(false);
+
+  readonly isAuthenticated = this._isAuthenticated.asReadonly();
+
+  login(email: string, password: string): boolean {
+
+    // Temporary mock authentication
+    this._isAuthenticated.set(true);
+
+    return true;
+  }
+
+  register(name: string, email: string, password: string): boolean {
+
+    // Temporary mock registration
+    this._isAuthenticated.set(true);
+
+    return true;
+  }
+
+  logout(): void {
+    this._isAuthenticated.set(false);
+  }
+
+}
