@@ -12,8 +12,111 @@
   </div>
 
   <!-- Right -->
-  <div>
+  <div class="flex items-center gap-2">
 
+    <!-- Notification Bell -->
+    <button
+      mat-button
+      [matMenuTriggerFor]="notificationMenu"
+      class="relative min-w-10"
+      aria-label="Notifications"
+      mat-button (click)="testNotification()"
+    >
+
+      <span class="text-xl">🔔</span>
+
+      @if (notificationService.unreadCount() > 0) {
+        <span
+          class="absolute top-0 right-0 min-w-4 h-4 px-1
+                 rounded-full bg-red-500 text-white
+                 text-[10px] flex items-center justify-center"
+        >
+          {{ notificationService.unreadCount() }}
+        </span>
+      }
+
+    </button>
+
+    <!-- Notification Menu -->
+    <mat-menu #notificationMenu="matMenu">
+
+      <div class="w-72 sm:w-80 p-3">
+
+        <div class="flex items-center justify-between mb-3">
+
+          <h3 class="font-semibold text-slate-800">
+            Notifications
+          </h3>
+
+          <span class="text-xs text-slate-500">
+            {{ notificationService.unreadCount() }} unread
+          </span>
+
+        </div>
+
+        <div class="flex justify-between mb-3">
+
+          <button
+            mat-button
+            color="primary"
+            (click)="markAllAsRead()"
+          >
+            Mark all read
+          </button>
+
+          <button
+            mat-button
+            color="warn"
+            (click)="clearNotifications()"
+          >
+            Clear all
+          </button>
+
+        </div>
+
+        <div class="max-h-64 overflow-y-auto">
+
+          @for (
+            notification of notificationService.notifications();
+            track notification.id
+          ) {
+
+            <div
+              class="p-3 mb-2 rounded-lg cursor-pointer"
+              [class.bg-violet-50]="!notification.read"
+              [class.bg-slate-50]="notification.read"
+              (click)="markAsRead(notification.id)"
+            >
+
+              <p class="text-sm font-semibold text-slate-800">
+                {{ notification.title }}
+              </p>
+
+              <p class="text-sm text-slate-600 mt-1">
+                {{ notification.message }}
+              </p>
+
+              <p class="text-xs text-slate-400 mt-2">
+                {{ notification.createdAt | date:'short' }}
+              </p>
+
+            </div>
+
+          } @empty {
+
+            <p class="text-sm text-center text-slate-400 py-6">
+              No notifications yet.
+            </p>
+
+          }
+
+        </div>
+
+      </div>
+
+    </mat-menu>
+
+    <!-- User Profile -->
     <button
       mat-button
       [matMenuTriggerFor]="userMenu"
@@ -28,13 +131,13 @@
         RP
       </span>
 
-      <!-- Hide name on very small screens -->
       <span class="hidden sm:inline text-slate-700">
         Rohit
       </span>
 
     </button>
 
+    <!-- User Menu -->
     <mat-menu #userMenu="matMenu">
 
       <button mat-menu-item>
