@@ -1,8 +1,15 @@
-import { Injectable } from '@angular/core';
+
+import { Injectable, inject } from '@angular/core';
 import {
   Client,
   StompSubscription
 } from '@stomp/stompjs';
+
+import { environment } from '../../../environments/environment';
+import {
+  Notification as NotificationService,
+  IncomingNotification
+} from './notification';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +18,9 @@ export class Websocket {
 
   private client!: Client;
 
-  private readonly brokerURL = 'ws://localhost:8080/ws';
+  private readonly brokerURL = environment.websocketUrl;
+
+  private readonly notificationService = inject(NotificationService);
 
   // Connect to WebSocket server
   connect(): void {
@@ -22,7 +31,6 @@ export class Websocket {
 
     this.client = new Client({
       brokerURL: this.brokerURL,
-
       reconnectDelay: 5000,
 
       onConnect: () => {
@@ -30,10 +38,7 @@ export class Websocket {
       },
 
       onStompError: (frame) => {
-        console.error(
-          'STOMP error:',
-          frame.headers['message']
-        );
+        console.error('STOMP error:', frame.headers['message']);
       },
 
       onWebSocketError: (error) => {
@@ -59,6 +64,23 @@ export class Websocket {
       destination,
       message => callback(message.body)
     );
+  }
+
+  // Subscribe to incoming notifications
+  subscribeToNotifications(
+    destination: string
+  ): StompSubscription | undefined {
+
+    return this.subscribe(destination, (message) => {
+      try {
+        const notification: IncomingNotification = JSON.parse(message);
+
+        this.notificationService.addIncomingNotification(notification);
+
+      } catch (error) {
+        console.error('Invalid notification message:', error);
+      }
+    });
   }
 
   // Send a message

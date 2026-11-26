@@ -7,6 +7,11 @@ export interface AppNotification {
   createdAt: Date;
   read: boolean;
 }
+export interface IncomingNotification {
+  title: string;
+  message: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +25,12 @@ export class Notification {
   readonly unreadCount = computed(() =>
     this._notifications().filter(notification => !notification.read).length
   );
+  addIncomingNotification(notification: IncomingNotification): void {
+    this.addNotification(
+      notification.title,
+      notification.message
+    );
+  }
 
   // Add notification
   addNotification(title: string, message: string): void {
