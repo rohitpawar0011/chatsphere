@@ -95,6 +95,14 @@ export class ChatService {
 // 5. Select a conversation
 selectConversation(id: string): void {
   this.selectedConversationId.set(id);
+
+  this._conversations.update(conversations =>
+    conversations.map(conversation =>
+      conversation.id === id
+        ? { ...conversation, unreadCount: 0 }
+        : conversation
+    )
+  );
 }
 
 // 6. Clear selected conversation
@@ -125,6 +133,39 @@ clearSelectedConversation(): void {
             ],
             lastMessage: content,
             updatedAt: new Date()
+          }
+        : conversation
+    )
+  );
+}
+receiveMessage(
+  conversationId: string,
+  content: string
+): void {
+
+  const newMessage = {
+    id: crypto.randomUUID(),
+    content,
+    sender: 'other' as const,
+    createdAt: new Date(),
+    status: 'delivered' as const
+  };
+
+  this._conversations.update(conversations =>
+    conversations.map(conversation =>
+      conversation.id === conversationId
+        ? {
+            ...conversation,
+            messages: [
+              ...conversation.messages,
+              newMessage
+            ],
+            lastMessage: content,
+            updatedAt: new Date(),
+            unreadCount:
+              conversation.id === this.selectedConversationId()
+                ? conversation.unreadCount
+                : conversation.unreadCount + 1
           }
         : conversation
     )

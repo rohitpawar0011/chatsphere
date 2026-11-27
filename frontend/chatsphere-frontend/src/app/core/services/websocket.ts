@@ -10,6 +10,8 @@ import {
   Notification as NotificationService,
   IncomingNotification
 } from './notification';
+import { ChatService } from '../../features/chat/services/chat';
+import { IncomingChatMessage } from '../../features/chat/models/chat.models';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +23,7 @@ export class Websocket {
   private readonly brokerURL = environment.websocketUrl;
 
   private readonly notificationService = inject(NotificationService);
+  private readonly chatService = inject(ChatService);
 
   // Connect to WebSocket server
   connect(): void {
@@ -96,6 +99,24 @@ export class Websocket {
       body: JSON.stringify(body)
     });
   }
+  subscribeToMessages(
+  destination: string
+): StompSubscription | undefined {
+
+  return this.subscribe(destination, (message) => {
+    try {
+      const data: IncomingChatMessage = JSON.parse(message);
+
+      this.chatService.receiveMessage(
+        data.conversationId,
+        data.content
+      );
+
+    } catch (error) {
+      console.error('Invalid chat message:', error);
+    }
+  });
+}
 
   // Disconnect
   disconnect(): void {

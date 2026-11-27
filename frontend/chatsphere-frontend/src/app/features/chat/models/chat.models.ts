@@ -17,3 +17,7 @@ export interface Conversation {
   unreadCount: number;
   messages: Message[];
 }
+export interface IncomingChatMessage {
+  conversationId: string;
+  content: string;
+}
